@@ -1,6 +1,14 @@
 import "./App.css";
 import { useState } from "react";
-import { Navbar, Card, Button,Form } from "react-bootstrap";
+import {
+  Navbar,
+  Card,
+  Button,
+  Dropdown,
+  DropdownButton,
+  Form,
+} from "react-bootstrap";
+import { getByDisplayValue } from "@testing-library/dom";
 function App() {
   const [count, setCount] = useState(0);
   const ans = [
@@ -38,7 +46,6 @@ function App() {
   function PointsCounter(e) {
     {
       ans.map((item) => {
-        console.log(e.target.value, item, count);
         if (e.target.value === item) return setCount(count + 1);
       });
     }
@@ -47,36 +54,43 @@ function App() {
     setMarks("Your marks are: " + count);
     e.preventDefault();
   }
+  function getItemValue(e) {
+    console.log(e.target.value);
+  }
   console.log(data);
   return (
-    <div className="App">
-      <Navbar bg="dark">
+    <div >
+      <Navbar bg="dark" variant="dark">
         <Navbar.Brand>
           <h1>Welcome to the Quiz Page</h1>
         </Navbar.Brand>
       </Navbar>
-      <Card bg="secondary">
+      <Card bg="secondary" className="App">
         <Card.Body>
           {data.map((t, i) => (
             <div key={i}>
               <Card bg="success">
                 <Card.Body>
-                  <label>
-                    <h3>{t.ques}</h3>{" "}
-                  </label>
-                  <br />
-                  <select onChange={(e) => PointsCounter(e)}>
-                    <option>Select</option>
-                    <option>{t.op1}</option>
-                    <option>{t.op2}</option>
-                  </select>
-                  <br />
+                  <Form>
+                    <Form.Label ><h3>{t.ques}</h3></Form.Label>
+                    <Form.Control
+                      as="select" style={{width:"150px"}}
+                      onChange={(e) => PointsCounter(e)}
+                    >
+                      <option>Select</option>
+                      <option>{t.op1}</option>
+                      <option>{t.op2}</option>
+                    </Form.Control>
+                  </Form>
                 </Card.Body>
               </Card>
             </div>
           ))}
-          <Button
+          <br/>
+          <div className="center">
+          <Button 
             variant="primary"
+            size="lg"
             onClick={(e) => {
               getmarks(e);
             }}
@@ -84,9 +98,10 @@ function App() {
             Submit
           </Button>{" "}
           <h5>{marks}</h5>
+          </div>
+          
         </Card.Body>
       </Card>
-      
     </div>
   );
 }
